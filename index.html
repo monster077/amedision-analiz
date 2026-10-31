@@ -1,149 +1,290 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amedision | Futbol İstatistik Merkezi</title>
+<title>Amedision | Profesyonel Futbol Analiz Stüdyosu</title>
 <style>
-:root{--green:#00a86b;--red:#e63946;--bg:#090d0c;--panel:#141c19;--muted:#9baaa3}
+:root{--green:#00e676;--red:#ff3366;--bg:#050807;--panel:#0e1612;--panel-border:#1c2d23;--muted:#8fa89b;--accent:#2979ff;--gold:#ffea00;--card-bg:#121c17}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:white;font-family:Arial,sans-serif}
-header{padding:24px 6%;background:#101714;border-bottom:2px solid var(--green);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.logo{font-size:25px;font-weight:900;letter-spacing:1px}
+body{margin:0;background:var(--bg);color:#f1f5f3;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{padding:24px 6%;background:#090f0c;border-bottom:2px solid var(--green);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
+.logo{font-size:26px;font-weight:900;letter-spacing:1px}
 .logo span{color:var(--green)}
 .logo b{color:var(--red)}
-header small{color:var(--muted)}
-main{max-width:1150px;margin:30px auto;padding:0 18px}
-h2{font-size:20px;margin:28px 0 15px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:13px}
-.card,.panel{background:var(--panel);border:1px solid #26342d;border-radius:13px;padding:18px}
-.card small{color:var(--muted)}
-.number{font-size:30px;font-weight:800;margin-top:10px}
-.green{color:var(--green)}.red{color:var(--red)}
-.panel{margin-bottom:18px}
-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
-label{font-size:12px;color:var(--muted);display:block;margin-bottom:7px}
-input{width:100%;padding:12px;background:#0c1210;border:1px solid #35443c;border-radius:8px;color:white}
-button{padding:12px 17px;border:0;border-radius:8px;background:var(--green);color:#06120c;font-weight:bold;cursor:pointer}
-button:hover{opacity:.85}
-.delete{background:#51252a;color:white;padding:7px 10px}
-table{width:100%;border-collapse:collapse;min-width:520px}
-th,td{text-align:left;padding:13px 10px;border-bottom:1px solid #29352f;font-size:13px}
-th{color:var(--muted)}
-.table-wrap{overflow-x:auto}
-.empty{color:var(--muted);text-align:center;padding:22px}
-footer{text-align:center;color:var(--muted);padding:30px;font-size:12px}
+header small{color:var(--muted);font-weight:600;letter-spacing:1px;font-size:11px}
+main{max-width:1100px;margin:35px auto;padding:0 20px}
+h2{font-size:17px;margin:30px 0 14px;letter-spacing:0.5px;color:#cce3d6;text-transform:uppercase}
+.panel{background:var(--panel);border:1px solid var(--panel-border);border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+label{font-size:11px;color:var(--muted);display:block;margin-bottom:7px;text-transform:uppercase;font-weight:700;letter-spacing:0.5px}
+input{width:100%;padding:12px 15px;background:#070c09;border:1px solid #1f3528;border-radius:9px;color:white;font-size:15px;outline:none;transition:all 0.3s}
+input:focus{border-color:var(--green);box-shadow:0 0 10px rgba(0,230,118,0.2)}
+.btn-analyze{background:linear-gradient(135deg, #00e676, #00b0ff);color:#041009;width:100%;padding:16px;border:0;border-radius:10px;font-weight:900;cursor:pointer;font-size:16px;margin-top:25px;letter-spacing:1px;box-shadow:0 6px 20px rgba(0,230,118,0.3);transition:transform 0.2s}
+.btn-analyze:hover{transform:translateY(-2px);opacity:.95}
+.team-box{background:var(--card-bg);padding:20px;border-radius:12px;border:1px solid var(--panel-border)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.bar-container{margin-bottom:14px}
+.bar-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;font-weight:600}
+.bar-bg{background:#070c09;border:1px solid var(--panel-border);border-radius:8px;height:14px;overflow:hidden;display:flex}
+.bar-fill{height:100%;transition:width 0.5s cubic-bezier(0.4, 0, 0.2, 1)}
+
+/* Rozetler ve Kartlar */
+.badge-safe{background:rgba(0,230,118,0.15);color:var(--green);border:1px solid rgba(0,230,118,0.3);padding:8px 14px;border-radius:8px;font-weight:bold;font-size:13px;display:inline-block}
+.badge-risky{background:rgba(255,51,102,0.15);color:var(--red);border:1px solid rgba(255,51,102,0.3);padding:8px 14px;border-radius:8px;font-weight:bold;font-size:13px;display:inline-block}
+.badge-warning{background:rgba(255,234,0,0.15);color:var(--gold);border:1px solid rgba(255,234,0,0.3);padding:8px 14px;border-radius:8px;font-weight:bold;font-size:13px;display:inline-block}
+
+.score-card{background:var(--card-bg);border:1px solid var(--panel-border);border-radius:10px;padding:15px;text-align:center}
+.score-card b{font-size:24px;color:white;display:block;margin-bottom:4px}
+.score-card small{color:var(--muted);font-size:11px;text-transform:uppercase}
+
+.info-card{background:var(--card-bg);border:1px solid var(--panel-border);border-radius:10px;padding:14px;text-align:center}
+.info-card small{display:block;color:var(--muted);font-size:11px;margin-bottom:5px;text-transform:uppercase}
+.info-card span{font-size:18px;font-weight:800;color:var(--gold)}
+
+footer{text-align:center;color:var(--muted);padding:35px;font-size:12px;border-top:1px solid var(--panel-border);margin-top:50px}
 </style>
 </head>
 <body>
 <header>
   <div class="logo"><span>AMED</span><b>ISION</b></div>
-  <small>FUTBOL İSTATİSTİK MERKEZİ</small>
+  <small>PROFESYONEL FUTBOL ANALİZ STÜDYOSU</small>
 </header>
 <main>
-  <h2>Genel Bakış</h2>
-  <section class="cards">
-    <div class="card"><small>Toplam Maç</small><div class="number" id="played">0</div></div>
-    <div class="card"><small>Galibiyet</small><div class="number green" id="wins">0</div></div>
-    <div class="card"><small>Beraberlik</small><div class="number" id="draws">0</div></div>
-    <div class="card"><small>Mağlubiyet</small><div class="number red" id="losses">0</div></div>
-    <div class="card"><small>Atılan Gol</small><div class="number green" id="scored">0</div></div>
-    <div class="card"><small>Yenilen Gol</small><div class="number red" id="conceded">0</div></div>
-  </section>
-
-  <h2>Maç İstatistiği Ekle</h2>
+  <h2>Sezonluk Gol ve Form Parametreleri</h2>
   <section class="panel">
-    <form id="matchForm">
-      <div><label>Takımımız</label><input id="team" value="Amed SK" required></div>
-      <div><label>Rakip takım</label><input id="opponent" placeholder="Rakip takım" required></div>
-      <div><label>Attığımız gol</label><input id="gf" type="number" min="0" max="99" required></div>
-      <div><label>Yediğimiz gol</label><input id="ga" type="number" min="0" max="99" required></div>
-      <div><label>Maç tarihi</label><input id="date" type="date" required></div>
-      <div><label>Organizasyon</label><input id="league" placeholder="Süper Lig"></div>
-      <div style="align-self:end"><button type="submit">+ Maçı Kaydet</button></div>
-    </form>
-  </section>
+    <div class="grid-2">
+      <!-- EV SAHİBİ -->
+      <div class="team-box">
+        <h3 style="color:var(--green);margin-top:0;margin-bottom:14px;font-size:16px">Ev Sahibi Takım</h3>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div><label>Takım Adı</label><input id="homeTeam" value="Amed SK"></div>
+          <div><label>Oynadığı Maç Sayısı</label><input id="homeMatches" type="number" min="1" max="50" value="10"></div>
+          <div><label>Sezon Boyu Attığı Toplam Gol</label><input id="homeGF" type="number" min="0" max="150" value="16"></div>
+          <div><label>Sezon Boyu Yediği Toplam Gol</label><input id="homeGA" type="number" min="0" max="150" value="9"></div>
+        </div>
+      </div>
 
-  <h2>Son Maçlar</h2>
-  <section class="panel table-wrap">
-    <table>
-      <thead><tr><th>Tarih</th><th>Takımımız</th><th>Skor</th><th>Rakip</th><th>Sonuç</th><th></th></tr></thead>
-      <tbody id="matches"></tbody>
-    </table>
-    <div class="empty" id="empty">Henüz maç eklenmedi.</div>
-  </section>
+      <!-- DEPLASMAN -->
+      <div class="team-box">
+        <h3 style="color:var(--red);margin-top:0;margin-bottom:14px;font-size:16px">Deplasman Takım</h3>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div><label>Takım Adı</label><input id="awayTeam" placeholder="Rakip Takım" value="Samsunspor"></div>
+          <div><label>Oynadığı Maç Sayısı</label><input id="awayMatches" type="number" min="1" max="50" value="10"></div>
+          <div><label>Sezon Boyu Attığı Toplam Gol</label><input id="awayGF" type="number" min="0" max="150" value="12"></div>
+          <div><label>Sezon Boyu Yediği Toplam Gol</label><input id="awayGA" type="number" min="0" max="150" value="14"></div>
+        </div>
+      </div>
+    </div>
 
-  <h2>Takım Performansı</h2>
-  <section class="cards">
-    <div class="card"><small>Maç başına gol</small><div class="number" id="avgScored">0</div></div>
-    <div class="card"><small>Maç başına yenilen gol</small><div class="number" id="avgConceded">0</div></div>
-    <div class="card"><small>Galibiyet oranı</small><div class="number green" id="winRate">%0</div></div>
-  </section>
-  <section class="panel">
-    <h3>Son 5 Maç Formu</h3>
-    <div id="form" style="display:flex;gap:9px;flex-wrap:wrap;color:var(--muted)">Henüz veri yok.</div>
+    <button type="button" class="btn-analyze" onclick="runAiAnalysis()">⚡ DETAYLI İSTATİSTİK ANALİZİNİ ÇALIŞTIR</button>
+    
+    <div id="analysisResults" style="margin-top:35px;display:none">
+      <hr style="border-color:var(--panel-border);margin:30px 0">
+      
+      <!-- GÜVENİLİRLİK & RİSK ANALİZİ -->
+      <div style="margin-bottom:30px;background:var(--card-bg);padding:18px 22px;border-radius:12px;border:1px solid var(--panel-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px">
+        <div>
+          <h4 style="margin:0 0 6px 0;font-size:12px;color:var(--muted)">MAÇ GÜVENLİK DERECESİ</h4>
+          <span id="riskBadge" class="badge-safe">Güvenli Maç</span>
+        </div>
+        <div>
+          <h4 style="margin:0 0 6px 0;font-size:12px;color:var(--muted)">EN İDEAL ÖNERİ TERCİHİ</h4>
+          <span id="bestPick" style="color:var(--green);font-weight:bold;font-size:16px">-</span>
+        </div>
+      </div>
+
+      <!-- MAÇ SKORU TAHMİNLERİ -->
+      <div style="margin-bottom:30px">
+        <h4 style="color:var(--gold);margin-bottom:14px;font-size:15px">🎯 En Olası 3 Maç Skoru Beklentisi</h4>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px">
+          <div class="score-card"><b id="score1">-</b><small>1. Olası Skor</small></div>
+          <div class="score-card"><b id="score2">-</b><small>2. Olası Skor</small></div>
+          <div class="score-card"><b id="score3">-</b><small>3. Olası Skor</small></div>
+        </div>
+      </div>
+
+      <!-- İY / MS TAHMİNLERİ -->
+      <div style="margin-bottom:30px">
+        <h4 style="color:var(--accent);margin-bottom:14px;font-size:15px">⏱️ İlk Yarı / Maç Sonucu (İY/MS) Olasılıkları</h4>
+        <div class="grid-3">
+          <div class="info-card"><small>İY 1 / MS 1</small><span id="iyms11" style="color:var(--green)">%0</span></div>
+          <div class="info-card"><small>İY X / MS 1</small><span id="iymsx1" style="color:var(--green)">%0</span></div>
+          <div class="info-card"><small>İY X / MS X</small><span id="iymsxx" style="color:var(--gold)">%0</span></div>
+          <div class="info-card"><small>İY 2 / MS 2</small><span id="iyms22" style="color:var(--red)">%0</span></div>
+        </div>
+      </div>
+
+      <!-- YÜZDELİK GRAFİKLER BÖLÜMÜ -->
+      <div class="grid-2">
+        <!-- MAÇ SONUCU & ÇİFTE ŞANS -->
+        <div>
+          <h3 style="color:var(--green);font-size:15px;margin-bottom:15px">Maç Sonucu & Çifte Şans</h3>
+          
+          <div class="bar-container"><div class="bar-label"><span id="lbl1">1 (Ev): %0</span></div><div class="bar-bg"><div class="bar-fill" id="bar1" style="background:var(--green);width:0%"></div></div></div>
+          <div class="bar-container"><div class="bar-label"><span id="lblX">X (Beraberlik): %0</span></div><div class="bar-bg"><div class="bar-fill" id="barX" style="background:var(--gold);width:0%"></div></div></div>
+          <div class="bar-container"><div class="bar-label"><span id="lbl2">2 (Dep): %0</span></div><div class="bar-bg"><div class="bar-fill" id="bar2" style="background:var(--red);width:0%"></div></div></div>
+          
+          <div style="margin-top:20px"></div>
+          <div class="bar-container"><div class="bar-label"><span id="lbl1X">1X (Ev veya Beraberlik): %0</span></div><div class="bar-bg"><div class="bar-fill" id="bar1X" style="background:#00e676;width:0%"></div></div></div>
+          <div class="bar-container"><div class="bar-label"><span id="lblX2">X2 (Beraberlik veya Dep): %0</span></div><div class="bar-bg"><div class="bar-fill" id="barX2" style="background:#2979ff;width:0%"></div></div></div>
+          <div class="bar-container"><div class="bar-label"><span id="lbl12">12 (Maç Berabere Bitmez): %0</span></div><div class="bar-bg"><div class="bar-fill" id="bar12" style="background:#8fa89b;width:0%"></div></div></div>
+        </div>
+
+        <!-- ALT / ÜST & KG ANALİZLERİ -->
+        <div>
+          <h3 style="color:var(--accent);font-size:15px;margin-bottom:15px">Alt / Üst & KG Analizleri</h3>
+          
+          <div class="bar-container"><div class="bar-label"><span id="lblOver15">1.5 Üst: %0</span><span id="lblUnder15">1.5 Alt: %0</span></div><div class="bar-bg"><div class="bar-fill" id="barOver15" style="background:var(--green);width:0%"></div></div></div>
+          <div class="bar-container"><div class="bar-label"><span id="lblOver25">2.5 Üst: %0</span><span id="lblUnder25">2.5 Alt: %0</span></div><div class="bar-bg"><div class="bar-fill" id="barOver25" style="background:var(--green);width:0%"></div></div></div>
+          <div class="bar-container"><div class="bar-label"><span id="lblOver35">3.5 Üst: %0</span><span id="lblUnder35">3.5 Alt: %0</span></div><div class="bar-bg"><div class="bar-fill" id="barOver35" style="background:var(--accent);width:0%"></div></div></div>
+          <div class="bar-container"><div class="bar-label"><span id="lblOver45">4.5 Üst: %0</span><span id="lblUnder45">4.5 Alt: %0</span></div><div class="bar-bg"><div class="bar-fill" id="barOver45" style="background:var(--red);width:0%"></div></div></div>
+
+          <div style="margin-top:20px"></div>
+          <div class="bar-container"><div class="bar-label"><span id="lblKgVar">Karşılıklı Gol (KG) Var: %0</span></div><div class="bar-bg"><div class="bar-fill" id="barKgVar" style="background:var(--gold);width:0%"></div></div></div>
+          <div class="bar-container"><div class="bar-label"><span id="lblKgYok">Karşılıklı Gol (KG) Yok: %0</span></div><div class="bar-bg"><div class="bar-fill" id="barKgYok" style="background:var(--muted);width:0%"></div></div></div>
+        </div>
+      </div>
+
+    </div>
   </section>
 </main>
-<footer>AMEDISION MEDIA · FUTBOL İSTATİSTİKLERİ</footer>
+<footer>AMEDISION MEDIA · PROFESYONEL ANALİZ STÜDYOSU</footer>
 <script>
-let data=JSON.parse(localStorage.getItem("amedisionMatches")||"[]");
 const el=id=>document.getElementById(id);
-function render(){
- let w=0,d=0,l=0,gf=0,ga=0;
- data.forEach(m=>{
-  gf+=m.gf;ga+=m.ga;
-  if(m.gf>m.ga)w++;
-  else if(m.gf===m.ga)d++;
-  else l++;
- });
- let n=data.length;
- el("played").textContent=n;
- el("wins").textContent=w;
- el("draws").textContent=d;
- el("losses").textContent=l;
- el("scored").textContent=gf;
- el("conceded").textContent=ga;
- el("avgScored").textContent=n?(gf/n).toFixed(2):"0";
- el("avgConceded").textContent=n?(ga/n).toFixed(2):"0";
- el("winRate").textContent="%"+(n?Math.round(w/n*100):0);
- let sorted=[...data].sort((a,b)=>b.date.localeCompare(a.date));
- el("matches").innerHTML=sorted.map(m=>{
-  let result=m.gf>m.ga?"G":m.gf===m.ga?"B":"M";
-  let color=result==="G"?"#00a86b":result==="M"?"#e63946":"#d6b84c";
-  return `<tr><td>${m.date}</td><td>${escapeHTML(m.team)}</td><td><b>${m.gf} - ${m.ga}</b></td><td>${escapeHTML(m.opponent)}</td><td style="color:${color};font-weight:bold">${result}</td><td><button class="delete" onclick="removeMatch(${m.id})">Sil</button></td></tr>`;
- }).join("");
- el("empty").style.display=n?"none":"block";
- let last=sorted.slice(0,5);
- el("form").innerHTML=last.length?last.map(m=>{
-  let r=m.gf>m.ga?"G":m.gf===m.ga?"B":"M";
-  let c=r==="G"?"#00a86b":r==="M"?"#e63946":"#d6b84c";
-  return `<span style="background:${c};color:#07100b;padding:9px 14px;border-radius:7px;font-weight:bold">${r}</span>`;
- }).join(""):"Henüz veri yok.";
+
+function runAiAnalysis(){
+ let home=el("homeTeam").value || "Ev Sahibi";
+ let away=el("awayTeam").value || "Deplasman";
+ 
+ let hM = Number(el("homeMatches").value) || 1;
+ let hGF = Number(el("homeGF").value) || 0;
+ let hGA = Number(el("homeGA").value) || 0;
+
+ let aM = Number(el("awayMatches").value) || 1;
+ let aGF = Number(el("awayGF").value) || 0;
+ let aGA = Number(el("awayGA").value) || 0;
+
+ let hScoreAvg = hGF / hM;
+ let hConcedeAvg = hGA / hM;
+ let aScoreAvg = aGF / aM;
+ let aConcedeAvg = aGA / aM;
+
+ let homePower = (hScoreAvg + aConcedeAvg) / 2 + 0.25;
+ let awayPower = (aScoreAvg + hConcedeAvg) / 2;
+
+ let diff = homePower - awayPower;
+ let p1 = Math.min(82, Math.max(12, Math.round(46 + (diff * 28))));
+ let p2 = Math.min(75, Math.max(10, Math.round(28 - (diff * 28))));
+ let pX = 100 - (p1 + p2);
+ if(pX < 10) pX = 15;
+
+ let total = p1 + pX + p2;
+ p1 = Math.round((p1/total)*100);
+ pX = Math.round((pX/total)*100);
+ p2 = 100 - (p1 + pX);
+
+ // Çifte Şans
+ let p1X = Math.min(97, p1 + pX);
+ let pX2 = Math.min(97, p2 + pX);
+ let p12 = Math.min(98, p1 + p2);
+
+ // Alt / Üst Olasılıkları
+ let expectedTotalGoals = homePower + awayPower;
+ 
+ let over25 = Math.min(92, Math.max(12, Math.round(expectedTotalGoals * 34)));
+ let under25 = 100 - over25;
+
+ let over15 = Math.min(98, over25 + 24);
+ let under15 = 100 - over15;
+
+ let over35 = Math.max(8, over25 - 30);
+ let under35 = 100 - over35;
+
+ let over45 = Math.max(4, over35 - 22);
+ let under45 = 100 - over45;
+
+ // KG Var / Yok
+ let kgVar = Math.min(90, Math.max(15, Math.round(((hScoreAvg + aScoreAvg) / 2) * 46)));
+ let kgYok = 100 - kgVar;
+
+ // İY / MS Olasılıkları
+ let iyms11Val = Math.round(p1 * 0.55);
+ let iymsx1Val = Math.round(p1 * 0.30);
+ let iymsxxVal = Math.round(pX * 0.60);
+ let iyms22Val = Math.round(p2 * 0.50);
+
+ // Risk ve Güvenilirlik Analizi
+ let badge = el("riskBadge");
+ let pick = el("bestPick");
+ if(p1 >= 60) {
+   badge.className = "badge-safe";
+   badge.textContent = "🟢 Güvenli Maç (Düşük Risk)";
+   pick.textContent = `${home} Kazanır veya 1.5 Üst`;
+ } else if(p1 >= 45) {
+   badge.className = "badge-warning";
+   badge.textContent = "🟡 Orta Risk / Dikkat Edilmeli";
+   pick.textContent = `Çifte Şans 1X veya 2.5 Üst`;
+ } else {
+   badge.className = "badge-risky";
+   badge.textContent = "🔴 Yüksek Risk / Sürpriz Adayı";
+   pick.textContent = `KG Var veya X2 Çifte Şans`;
+ }
+
+ // Skor Tahminleri Üretici
+ let hExpectedGoals = Math.max(0, Math.round(homePower));
+ let aExpectedGoals = Math.max(0, Math.round(awayPower));
+ el("score1").textContent = `${hExpectedGoals} - ${aExpectedGoals}`;
+ el("score2").textContent = `${hExpectedGoals + 1} - ${aExpectedGoals}`;
+ el("score3").textContent = `${hExpectedGoals} - ${aExpectedGoals + 1}`;
+
+ el("analysisResults").style.display = "block";
+
+ // Alanları doldurma
+ el("iyms11").textContent = `%${iyms11Val}`;
+ el("iymsx1").textContent = `%${iymsx1Val}`;
+ el("iymsxx").textContent = `%${iymsxxVal}`;
+ el("iyms22").textContent = `%${iyms22Val}`;
+
+ // 1X2
+ el("lbl1").textContent = `${home} Kazanır (1): %${p1}`;
+ el("bar1").style.width = p1 + "%";
+ el("lblX").textContent = `Beraberlik (X): %${pX}`;
+ el("barX").style.width = pX + "%";
+ el("lbl2").textContent = `${away} Kazanır (2): %${p2}`;
+ el("bar2").style.width = p2 + "%";
+
+ // Çifte Şans
+ el("lbl1X").textContent = `1X (Ev veya Beraberlik): %${p1X}`;
+ el("bar1X").style.width = p1X + "%";
+ el("lblX2").textContent = `X2 (Beraberlik veya Dep): %${pX2}`;
+ el("barX2").style.width = pX2 + "%";
+ el("lbl12").textContent = `12 (Maç Berabere Bitmez): %${p12}`;
+ el("bar12").style.width = p12 + "%";
+
+ // Alt / Üst
+ el("lblOver15").textContent = `1.5 Üst: %${over15}`;
+ el("lblUnder15").textContent = `1.5 Alt: %${under15}`;
+ el("barOver15").style.width = over15 + "%";
+
+ el("lblOver25").textContent = `2.5 Üst: %${over25}`;
+ el("lblUnder25").textContent = `2.5 Alt: %${under25}`;
+ el("barOver25").style.width = over25 + "%";
+
+ el("lblOver35").textContent = `3.5 Üst: %${over35}`;
+ el("lblUnder35").textContent = `3.5 Alt: %${under35}`;
+ el("barOver35").style.width = over35 + "%";
+
+ el("lblOver45").textContent = `4.5 Üst: %${over45}`;
+ el("lblUnder45").textContent = `4.5 Alt: %${under45}`;
+ el("barOver45").style.width = over45 + "%";
+
+ // KG Var / Yok
+ el("lblKgVar").textContent = `Karşılıklı Gol (KG) Var: %${kgVar}`;
+ el("barKgVar").style.width = kgVar + "%";
+ el("lblKgYok").textContent = `Karşılıklı Gol (KG) Yok: %${kgYok}`;
+ el("barKgYok").style.width = kgYok + "%";
 }
-function escapeHTML(s){
- return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-el("matchForm").addEventListener("submit",e=>{
- e.preventDefault();
- let gf=Number(el("gf").value),ga=Number(el("ga").value);
- data.push({
-  id:Date.now(),team:el("team").value.trim(),
-  opponent:el("opponent").value.trim(),
-  gf,ga,date:el("date").value,league:el("league").value.trim()
- });
- localStorage.setItem("amedisionMatches",JSON.stringify(data));
- e.target.reset();
- el("team").value="Amed SK";
- render();
-});
-function removeMatch(id){
- if(!confirm("Bu maçı silmek istiyor musun?"))return;
- data=data.filter(m=>m.id!==id);
- localStorage.setItem("amedisionMatches",JSON.stringify(data));
- render();
-}
-render();
 </script>
 </body>
 </html>
